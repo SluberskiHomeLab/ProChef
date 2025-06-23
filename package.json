@@ -1,0 +1,14 @@
+{
+  "name": "cookbook",
+  "version": "1.0.0",
+  "description": "A React app to save recipes in a cookbook",
+  "main": "src/index.js",
+  "dependencies": {
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build"
+  }
+}

@@ -1,0 +1,42 @@
+version: "3.8"
+
+services:
+  mysql:
+    image: mysql:8
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: mysecretpassword
+      MYSQL_DATABASE: cookbook
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./docker/mysql-init.sql:/docker-entrypoint-initdb.d/mysql-init.sql:ro
+
+  backend:
+    build: ./backend
+    environment:
+      - MYSQL_HOST=mysql
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=mysecretpassword
+      - MYSQL_DATABASE=cookbook
+      - SECRET=supersecretjwtkey
+    depends_on:
+      - mysql
+    ports:
+      - "4000:4000"
+    volumes:
+      - ./backend:/app
+    command: ["node", "server.js"]
+
+  frontend:
+    build: ./frontend
+    depends_on:
+      - backend
+    ports:
+      - "8080:80"
+    volumes:
+      - ./frontend/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+
+volumes:
+  mysql_data:
