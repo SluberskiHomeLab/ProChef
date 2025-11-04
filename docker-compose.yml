@@ -16,10 +16,13 @@ services:
   backend:
     build: ./backend
     environment:
-      - MYSQL_HOST=mysql
-      - MYSQL_USER=root
-      - MYSQL_PASSWORD=mysecretpassword
-      - MYSQL_DATABASE=cookbook
+      - NODE_ENV=development
+      - DATABASE_TYPE=mysql
+      - DATABASE_HOST=mysql
+      - DATABASE_PORT=3306
+      - DATABASE_USER=root
+      - DATABASE_PASSWORD=mysecretpassword
+      - DATABASE_NAME=cookbook
       - SECRET=supersecretjwtkey
     depends_on:
       - mysql
@@ -27,6 +30,7 @@ services:
       - "4000:4000"
     volumes:
       - ./backend:/app
+      - ./backend/uploads:/app/uploads
     command: ["node", "server.js"]
 
   frontend:
